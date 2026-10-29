@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>CLIL Quiz Challenge</title>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;700;800&display=swap" rel="stylesheet">
+<style>
+:root{box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);
+--bg:#f3effa;--card:#fff;--ink:#241a3d;--mut:#6b5f87;--line:#d9d0ec;--pri:#46178f;--priink:#fff;
+--c0:#d6314f;--c1:#2468d8;--c2:#e9a712;--c3:#18966a;--ok:#18966a;--bad:#d6314f;color-scheme:light}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#1a1030;--card:#2a1c4a;--ink:#f3eefc;--mut:#b5a8d4;--line:#3f2e66;--pri:#8f5ee6;--c0:#e5486a;--c1:#3b82f0;--c2:#f0b429;--c3:#25b37f;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#1a1030;--card:#2a1c4a;--ink:#f3eefc;--mut:#b5a8d4;--line:#3f2e66;--pri:#8f5ee6;--c0:#e5486a;--c1:#3b82f0;--c2:#f0b429;--c3:#25b37f;color-scheme:dark}
+*{box-sizing:border-box}
+:root{--s1:#bfe6f7;--s2:#f0fbe6;--h1:#c9ebb9;--h2:#9bd8a0;--h3:#72c28f;--rv:#4fa8e6;--rv2:#a6dbf5;--tr:#3d9a68;--tr2:#5cbb80;--cl:#fff}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--s1:#0f2a4a;--s2:#1d4a58;--h1:#245a56;--h2:#1e4d4a;--h3:#183f3f;--rv:#2a6fb8;--rv2:#4b93d1;--tr:#14503a;--tr2:#1b6a4a;--cl:#3a6a8a}}
+:root[data-theme="dark"]{--s1:#0f2a4a;--s2:#1d4a58;--h1:#245a56;--h2:#1e4d4a;--h3:#183f3f;--rv:#2a6fb8;--rv2:#4b93d1;--tr:#14503a;--tr2:#1b6a4a;--cl:#3a6a8a}
+#scene{position:fixed;inset:0;width:100%;height:100%;z-index:-1;pointer-events:none}
+main{position:relative}
+#fb{background:var(--card);border-radius:18px;padding:16px;border:2px solid var(--line)}
+html,body{margin:0;min-height:100%}
+body{background:var(--bg);color:var(--ink);font:500 17px/1.4 "Baloo 2",system-ui,-apple-system,"Segoe UI",sans-serif}
+main{max-width:860px;margin:0 auto;padding:16px}
+h1{font-size:clamp(2.2rem,8vw,3.6rem);line-height:1;margin:.2em 0;font-weight:800;color:var(--pri)}
+button{font:inherit;cursor:pointer;border:0;color:inherit}
+button:focus-visible{outline:3px solid var(--ink);outline-offset:2px}
+.card{background:var(--card);border-radius:18px;padding:22px;border:2px solid var(--line)}
+.big{background:var(--pri);color:var(--priink);font-weight:800;font-size:1.3rem;padding:12px 30px;border-radius:14px;box-shadow:0 5px 0 rgba(0,0,0,.28)}
+.big:active{transform:translateY(3px);box-shadow:0 2px 0 rgba(0,0,0,.28)}
+.ghost{background:none;border:2px solid var(--line);padding:8px 16px;border-radius:12px;font-weight:700;color:var(--ink)}
+.ghost.on{background:var(--pri);color:var(--priink);border-color:var(--pri)}
+.row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.hide{display:none!important}
+.mut{color:var(--mut)}
+#start{text-align:center;padding-top:5vh}
+#start .row{justify-content:center;margin:8px 0}
+.top{display:flex;justify-content:space-between;align-items:center;gap:8px;font-weight:700;margin-bottom:8px}
+.pill{background:var(--card);border:2px solid var(--line);border-radius:99px;padding:2px 14px}
+#bar{height:12px;border-radius:9px;background:var(--line);overflow:hidden;margin-bottom:14px}
+#bar i{display:block;height:100%;width:100%;background:var(--c3);transform-origin:left}
+#qt{font-size:clamp(1.3rem,4.2vw,1.9rem);font-weight:700;line-height:1.25;text-align:center;min-height:5.5em;display:flex;align-items:center;justify-content:center}
+#ans{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:14px}
+@media(max-width:600px){#ans{grid-template-columns:1fr}#qt{min-height:0}}
+.a{display:flex;align-items:center;gap:12px;text-align:left;padding:16px;border-radius:14px;color:#fff;font-weight:700;font-size:1.02rem;line-height:1.3;min-height:84px;box-shadow:0 5px 0 rgba(0,0,0,.3);transition:opacity .2s,transform .1s}
+.a:active:not(:disabled){transform:translateY(3px)}
+.a b{font-size:1.7rem;width:1.3em;flex:none;text-align:center}
+.a:nth-child(1){background:var(--c0)}.a:nth-child(2){background:var(--c1)}
+.a:nth-child(3){background:var(--c2);color:#2b1d00}.a:nth-child(4){background:var(--c3)}
+.a:disabled{cursor:default}
+.a.dim{opacity:.28}
+.a.right{outline:5px solid var(--ink);outline-offset:2px}
+#fb{margin-top:16px;text-align:center}
+#fb h2{margin:0;font-size:1.8rem}
+.ok{color:var(--ok)}.no{color:var(--bad)}
+.score{font-size:clamp(3rem,14vw,5.5rem);font-weight:800;line-height:1;color:var(--pri)}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:16px 0}
+.stats div{background:var(--bg);border-radius:12px;padding:10px;text-align:center}
+.stats b{display:block;font-size:1.6rem}
+.rv{border-top:2px solid var(--line);padding:12px 0;font-size:.95rem}
+.rv p{margin:2px 0}
+</style></head><body>
+<svg id="scene" viewBox="0 0 1200 800" preserveAspectRatio="xMidYMax slice" aria-hidden="true">
+<defs>
+<linearGradient id="sky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="var(--s1)"/><stop offset="1" stop-color="var(--s2)"/></linearGradient>
+<g id="pine"><path d="M0-100 L26-45 H12 L34-5 H14 L40 40 H-40 L-14-5 H-34 L-12-45 H-26Z"/><rect x="-6" y="40" width="12" height="26"/></g>
+<g id="oak"><rect x="-7" y="-10" width="14" height="70"/><circle cx="0" cy="-40" r="46"/><circle cx="-30" cy="-15" r="32"/><circle cx="30" cy="-15" r="32"/></g>
+</defs>
+<rect width="1200" height="800" fill="url(#sky)"/>
+<circle cx="930" cy="150" r="58" fill="#fff6c8" opacity=".85"/>
+<g fill="var(--cl)" opacity=".8"><ellipse cx="230" cy="130" rx="90" ry="22"/><ellipse cx="290" cy="112" rx="60" ry="22"/><ellipse cx="720" cy="90" rx="80" ry="18"/><ellipse cx="770" cy="76" rx="50" ry="18"/></g>
+<path d="M0 400 Q150 300 320 370 T640 340 T960 360 T1200 320 V800 H0Z" fill="var(--h1)"/>
+<path d="M0 470 Q200 390 400 450 T800 430 T1200 440 V800 H0Z" fill="var(--h2)"/>
+<path d="M570 440 C610 480 520 520 570 570 S420 690 430 800 H880 C860 700 960 640 800 580 S720 500 640 440Z" fill="var(--rv)"/>
+<path d="M590 470 C620 505 560 540 605 585 S520 700 560 800 H700 C650 700 760 640 690 585 S650 510 625 470Z" fill="var(--rv2)" opacity=".6"/>
+<path d="M0 600 Q180 540 380 600 Q430 650 400 800 H0Z" fill="var(--h3)"/>
+<path d="M1200 590 Q1020 540 870 610 Q840 680 880 800 H1200Z" fill="var(--h3)"/>
+<g fill="var(--tr)"><use href="#pine" transform="translate(70 520) scale(1.2)"/><use href="#pine" transform="translate(190 560)"/><use href="#pine" transform="translate(1130 510) scale(1.3)"/><use href="#pine" transform="translate(1010 555)"/><use href="#pine" transform="translate(300 430) scale(.55)"/><use href="#pine" transform="translate(900 420) scale(.5)"/></g>
+<g fill="var(--tr2)"><use href="#oak" transform="translate(120 690) scale(1.3)"/><use href="#oak" transform="translate(1080 700) scale(1.2)"/><use href="#oak" transform="translate(310 640) scale(.8)"/><use href="#oak" transform="translate(930 650) scale(.8)"/></g>
+</svg>
+<main>
+
+<section id="start" class="card">
+  <h1>CLIL Quiz Challenge</h1>
+  <p class="mut">Answer fast for more points. Wrong answers score zero, so read carefully!</p>
+  <p class="mut" style="margin-bottom:0">Questions</p>
+  <div class="row" id="nq"></div>
+  <p class="mut" style="margin-bottom:0">Time per question</p>
+  <div class="row" id="tm"></div>
+  <div class="row"><button class="ghost on" id="shuf" aria-pressed="true">Shuffle questions</button></div>
+  <p><button class="big" id="go">Start</button></p>
+</section>
+
+<section id="game" class="hide">
+  <div class="top"><span class="pill" id="prog"></span><span class="pill" id="streak"></span><span class="pill" id="sc"></span></div>
+  <div id="bar" aria-hidden="true"><i></i></div>
+  <div class="card"><div id="qt"></div></div>
+  <div id="ans"></div>
+  <div id="fb" class="hide"></div>
+</section>
+
+<section id="end" class="card hide" style="text-align:center">
+  <div class="mut" id="msg"></div>
+  <div class="score" id="fs"></div>
+  <div class="stats" id="st"></div>
+  <div class="row" style="justify-content:center">
+    <button class="big" id="again">Play again</button>
+    <button class="ghost" id="redo">Retry missed questions</button>
+  </div>
+  <div id="rv" style="text-align:left;margin-top:18px"></div>
+</section>
+</main>
+<script>
+const ALL=[{"q": "Multilingualism is…", "o": ["A social scenario in which a community speaks more than one language regularly, be it in professional, educative, or personal contexts.", "A new methodology for learning languages.", "Only a person who speaks six languages can be considered multilingual.", "A social scenario in which a community only speaks one language."], "a": 0}, {"q": "When children simultaneously acquire two or more languages during infancy, this can be qualified as an instance of…", "o": ["Enhanced language development.", "Multiple first language acquisition.", "Full language immersion.", "Second language acquisition."], "a": 1}, {"q": "The CLIL methodology has a “dual focus”: it teaches…", "o": ["Only language learning, no content learning.", "Only communication.", "Content, and it teaches language in an integrated, meaningful way.", "The four skills in a balanced way."], "a": 2}, {"q": "What are the 4Cs?", "o": ["Content, Confidence, Competence, and Culture.", "Cognition, Communication, Collaboration, and Co-ordination.", "Confidence, Competence, Collaboration and Co-ordination.", "Content, Cognition, Communication, and Culture."], "a": 3}, {"q": "What does “content-compatible language” refer to?", "o": ["It refers to the language skills that are NOT required for content mastery but need to be taken into consideration within the content lesson.", "It refers to the language that is easy to design and evaluate.", "It refers to the language skills required for content mastery.", "It refers to the technical vocabulary."], "a": 0}, {"q": "Which approach is cited as one of the most successful when implementing content in CLIL classes?", "o": ["Behaviorism.", "Constructivism.", "Direct instruction.", "Grammar-translation method."], "a": 1}, {"q": "The CLIL approach is…", "o": ["A language program focused exclusively on conversation practice without subject content.", "Based on a rigid framework for all schools.", "Flexible and adaptable to different learning contexts.", "A method that teaches only grammar rules through translation exercises."], "a": 2}, {"q": "Variables such as school size, teacher supply, and curriculum requirements primarily influence the decisions made during which stage of the CLIL Tool Kit?", "o": ["Stage 6: Next steps.", "Stage 1: A shared vision for CLIL.", "Stage 5: Monitoring and evaluating CLIL in action.", "Stage 2: Analysing and personalising the CLIL context."], "a": 3}, {"q": "Stage 4: Preparing the unit. After designing the CLIL unit, it is necessary to…", "o": ["Search for suitable materials and resources.", "Assess the didactic plan to guarantee quality.", "Transform the unit into the final summative assessment.", "Promote the exchange of ideas among professional communities."], "a": 0}, {"q": "A planning map for CLIL consists of…", "o": ["Five steps based on the six stages of the Tool Kit.", "Four steps based on the use of the 4Cs Framework and the Language Triptych.", "Six steps based on Bloom’s Taxonomy.", "Three steps based on BICS/CALP."], "a": 1}, {"q": "Which planning step focuses on selecting the thinking skills, problem-solving, and creativity that connect with the content, and suggests using a taxonomy like Bloom’s?", "o": ["Step four: Developing cultural awareness and opportunities.", "Step one: Considering the content.", "Step two: Connecting content and cognition.", "Step three: Communication."], "a": 2}, {"q": "Students can manage their own behaviour better when…", "o": ["The teacher creates rules without any student input.", "Classroom expectations change every day.", "Students are allowed to ignore agreed classroom rules.", "They develop and agree on classroom norms, rules, or principles of behaviour to help them learn."], "a": 3}, {"q": "In subjects like science, technology, and sports, what must teachers primarily aim to prevent when handling equipment, substances, or electronic devices?", "o": ["Accidents or mishaps.", "Reduced student interest.", "Overly cautious behaviour.", "Lack of language knowledge."], "a": 0}, {"q": "Talking openly about the role of mistakes in learning and analysing how a mistake can lead to personal and academic growth can…", "o": ["Reduce opportunities for reflection and improvement.", "Help foster a culture where learning through mistakes becomes an accepted norm and part of the classroom culture.", "Make students avoid challenges and difficult tasks.", "Encourage students to hide their mistakes from others."], "a": 1}, {"q": "What state is achieved when a CLIL teacher proposes activities that are challenging enough to be interesting but easy enough so students do not feel overwhelmed?", "o": ["Positive tension.", "Cognitive ease.", "Flow.", "Accelerated acquisition."], "a": 2}, {"q": "When dealing with difficult students who may be disruptive, disdainful, or unresponsive, what is crucial for the teacher?", "o": ["To ignore their behaviour to avoid encouraging it.", "To assign them independent work only.", "To remove them from the classroom immediately.", "To be properly trained to take these students’ special cognitive and emotional needs into account."], "a": 3}, {"q": "Fostering group communication in the CLIL classroom is particularly likely to improve the overall…", "o": ["Classroom environment.", "Need to avoid all peer interaction.", "Teacher’s administrative records.", "Amount of silent individual work."], "a": 0}, {"q": "In CLIL, language is driven by…", "o": ["Random vocabulary lists chosen without context.", "Curriculum requirements and by the students’ interests.", "Teacher preferences only, ignoring curriculum goals.", "Memorisation of isolated grammar rules without meaning."], "a": 1}, {"q": "The mother tongue in the CLIL classroom is described as a “temporary crutch”, which should be resorted to only…", "o": ["At the beginning of the course.", "For administrative tasks.", "When strictly necessary.", "When a student asks a question."], "a": 2}, {"q": "Translanguaging supports the use of bilingual students’ languages in order to create a space in which the incorporation of both languages is seen as…", "o": ["Only acceptable in informal situations outside school.", "Unnecessary and something that should be avoided in the classroom.", "A distraction from effective learning and communication.", "Natural, and accepted by teachers as a legitimate pedagogical practice."], "a": 3}, {"q": "Which statement best describes multilingualism at community level?", "o": ["People use more than one language regularly across social, educational, or professional settings.", "People study several languages but never use them in everyday life.", "A community must prohibit the use of languages other than its majority language.", "Only people who speak six or more languages count as multilingual."], "a": 0}, {"q": "A child who hears and acquires two languages from infancy may be experiencing…", "o": ["Translation-based learning after literacy has developed.", "Simultaneous bilingual or multiple first-language acquisition.", "Immersion that begins only after the first language is fully established.", "Foreign-language instruction begun in adolescence."], "a": 1}, {"q": "What makes a lesson CLIL rather than a content lesson with only incidental language exposure?", "o": ["The teacher assesses subject knowledge but deliberately avoids language aims.", "The lesson removes subject content so that learners can focus on grammar.", "Content and language objectives are planned together and addressed through meaningful tasks.", "Language is taught only in isolated drills outside the subject lesson."], "a": 2}, {"q": "In the 4Cs Framework, which dimension focuses most directly on thinking, reasoning, and problem-solving?", "o": ["Culture.", "Communication.", "Content.", "Cognition."], "a": 3}, {"q": "Which set correctly names the three elements of the Language Triptych?", "o": ["Language of learning, language for learning, and language through learning.", "Content, cognition, and culture.", "BICS, CALP, and phonological awareness.", "Listening, speaking, and translation."], "a": 0}, {"q": "Content-obligatory language is the language that…", "o": ["Should be replaced entirely by the students’ first language.", "Learners need in order to understand and express specific subject content.", "Is optional because it has no connection with the subject topic.", "Is used only for classroom administration."], "a": 1}, {"q": "A constructivist CLIL lesson is most likely to ask learners to…", "o": ["Copy definitions without connecting them to prior knowledge.", "Listen passively while the teacher provides all interpretations.", "Connect prior knowledge with new information through inquiry and meaningful activity.", "Avoid collaboration so each learner constructs meaning in isolation."], "a": 2}, {"q": "A flexible CLIL approach means that teachers should…", "o": ["Prioritise language exercises and remove subject learning outcomes.", "Avoid adapting lessons to learners’ needs because consistency is always preferable.", "Use the same materials, pacing, and tasks in every school regardless of context.", "Adapt materials and support to the context while maintaining content and language aims."], "a": 3}, {"q": "When analysing the CLIL context during Stage 2 of the Tool Kit, which set of factors is especially relevant?", "o": ["The school profile, learner needs, staff expertise, available resources, and curriculum constraints.", "Only the classroom decoration and seating arrangement.", "Only the final examination marks from a unit that has not yet been taught.", "Only the teacher’s personal preference for a particular textbook."], "a": 0}, {"q": "When preparing a CLIL unit for classroom use, what is a sensible next step after designing it?", "o": ["Remove the language objectives so subject content can stand alone.", "Select or adapt resources that align with the content and language objectives.", "Skip the materials stage and assess the unit before teaching it.", "Replace all learning activities with one final test."], "a": 1}, {"q": "In a CLIL planning sequence, ‘considering the content’ primarily involves…", "o": ["Planning cultural comparisons before identifying the subject topic.", "Selecting assessment grades before defining learning aims.", "Identifying the key concepts and content outcomes learners should understand.", "Choosing only the language structures learners will practise."], "a": 2}, {"q": "Within the 4Cs Framework, culture most directly encourages learners to…", "o": ["Treat subject content as unrelated to people or society.", "Memorise grammar rules without considering context.", "Avoid perspectives that differ from their own.", "Explore different perspectives and intercultural connections related to the topic."], "a": 3}, {"q": "Why can inviting students to help establish classroom norms support behaviour management?", "o": ["It can build shared understanding and ownership of expectations that support learning.", "It makes all classroom rules optional whenever students disagree.", "It removes the teacher’s responsibility to guide classroom behaviour.", "It ensures that expectations can change without explanation each day."], "a": 0}, {"q": "Before students handle laboratory equipment or electronic devices, a teacher should primarily…", "o": ["Allow each group to invent its own safety rules during the activity.", "Establish safety procedures and supervise appropriate use.", "Focus on pronunciation and leave equipment handling entirely to students.", "Avoid explaining procedures so learners can discover risks independently."], "a": 1}, {"q": "When a learner makes a mistake, a growth-oriented teacher should…", "o": ["Ignore it in every case, even when it blocks understanding.", "Treat the mistake as proof that the learner cannot master the topic.", "Use the mistake as an opportunity for feedback, reflection, and improvement.", "Discourage the learner from attempting similar tasks again."], "a": 2}, {"q": "Which activity design is most likely to help learners experience flow?", "o": ["Tasks that are far too easy and offer no meaningful goal.", "Tasks that are impossible with the learner’s current skills and available support.", "Tasks with unclear aims and no useful feedback.", "Tasks that balance meaningful challenge with achievable goals and suitable support."], "a": 3}, {"q": "A student is persistently disruptive or withdrawn during CLIL lessons. A constructive first response is to…", "o": ["Use informed, needs-sensitive strategies and seek appropriate support when needed.", "Remove the student from every lesson immediately, regardless of context.", "Assign permanent solitary work without investigating the underlying needs.", "Assume the student is deliberately refusing to learn and offer no support."], "a": 0}, {"q": "Structured group communication in the CLIL classroom can support…", "o": ["The elimination of collaboration and discussion.", "Peer interaction, shared meaning-making, and a stronger classroom community.", "The replacement of all subject learning objectives with social activities.", "A reduction in opportunities to practise language for learning."], "a": 1}, {"q": "When selecting language objectives for a CLIL unit, teachers should consider…", "o": ["Random vocabulary lists unrelated to the subject content.", "Only the teacher’s personal language-learning preferences.", "The language needed for the curriculum content and learning tasks, alongside learners’ needs and interests.", "Grammar translation as the sole route to subject understanding."], "a": 2}, {"q": "Translanguaging in a bilingual CLIL classroom is best understood as…", "o": ["A strategy acceptable only outside school and unrelated to learning.", "A replacement for subject learning and all target-language development.", "A practice that should always be prohibited during formal learning.", "The purposeful use of learners’ linguistic resources to support meaning-making where pedagogically appropriate."], "a": 3}];
+const $=id=>document.getElementById(id);
+const SH=["▲","◆","●","■"],L="ABCD";
+let N=20,T=30,shuffleQ=true,Q=[],i=0,score=0,streak=0,best=0,res=[],t0=0,raf=0,locked=false;
+const shuffle=a=>{a=a.slice();for(let k=a.length-1;k>0;k--){const j=Math.floor(Math.random()*(k+1));[a[k],a[j]]=[a[j],a[k]]}return a};
+function chips(el,vals,cur,set,suffix){
+  el.innerHTML="";
+  vals.forEach(v=>{const b=document.createElement("button");b.className="ghost"+(v===cur?" on":"");b.textContent=v+(suffix||"");
+    b.onclick=()=>{set(v);chips(el,vals,v,set,suffix)};el.appendChild(b)});
+}
+chips($("nq"),[10,20,40],N,v=>N=v);
+chips($("tm"),[20,30,45],T,v=>T=v," s");
+$("shuf").onclick=e=>{shuffleQ=!shuffleQ;e.target.classList.toggle("on",shuffleQ);e.target.setAttribute("aria-pressed",shuffleQ)};
+function show(id){["start","game","end"].forEach(s=>$(s).classList.toggle("hide",s!==id))}
+function begin(pool){
+  Q=(shuffleQ?shuffle(pool):pool.slice()).slice(0,pool===ALL?N:pool.length);
+  i=0;score=0;streak=0;best=0;res=[];show("game");ask();
+}
+function ask(){
+  locked=false;const q=Q[i];
+  q.opts=shuffle(q.o.map((t,k)=>({t,ok:k===q.a})));
+  $("prog").textContent=`Question ${i+1} of ${Q.length}`;
+  $("sc").textContent=`${score} pts`;
+  $("streak").textContent=streak>1?`🔥 ${streak} in a row`:"No streak yet";
+  $("qt").textContent=q.q;
+  $("fb").classList.add("hide");
+  const box=$("ans");box.innerHTML="";
+  q.opts.forEach((o,k)=>{const b=document.createElement("button");b.className="a";
+    b.innerHTML=`<b aria-hidden="true">${SH[k]}</b><span></span>`;b.lastChild.textContent=o.t;
+    b.setAttribute("aria-label",`${L[k]}: ${o.t}`);b.onclick=()=>pick(k);box.appendChild(b)});
+  t0=performance.now();cancelAnimationFrame(raf);tick();
+}
+function tick(){
+  const f=1-(performance.now()-t0)/(T*1000),bar=document.querySelector("#bar i");
+  bar.style.transform=`scaleX(${Math.max(f,0)})`;
+  bar.style.background=f>.5?"var(--c3)":f>.2?"var(--c2)":"var(--c0)";
+  if(f<=0)return pick(-1);
+  raf=requestAnimationFrame(tick);
+}
+function pick(k){
+  if(locked)return;locked=true;cancelAnimationFrame(raf);
+  const q=Q[i],el=(performance.now()-t0)/(T*1000),right=k>=0&&q.opts[k].ok;
+  let pts=0;
+  if(right){pts=Math.round(1000*(1-el/2));streak++;best=Math.max(best,streak)}else streak=0;
+  score+=pts;res.push({q,right,timeout:k<0,chosen:k<0?null:q.opts[k].t});
+  document.querySelectorAll(".a").forEach((b,j)=>{b.disabled=true;
+    if(q.opts[j].ok)b.classList.add("right");else b.classList.add("dim")});
+  $("sc").textContent=`${score} pts`;
+  const last=i===Q.length-1;
+  $("fb").innerHTML=`<h2 class="${right?"ok":"no"}">${right?`Correct! +${pts}`:k<0?"Time’s up!":"Not quite"}</h2>
+   <p class="mut" style="margin:4px 0 12px">${right?(streak>1?`${streak} in a row!`:"Nice one."):"The right answer is outlined."}</p>
+   <button class="big" id="nx">${last?"See results":"Next question"}</button>`;
+  $("fb").classList.remove("hide");
+  $("nx").onclick=()=>{i++;last?finish():ask()};
+  $("nx").focus({preventScroll:true});
+}
+function finish(){
+  const ok=res.filter(r=>r.right).length,pc=Math.round(ok/res.length*100);
+  $("msg").textContent=pc>=90?"Outstanding! CLIL champion!":pc>=70?"Great job, you’re exam-ready!":pc>=50?"Good start. Review the missed ones below.":"Keep going: review below and try again.";
+  $("fs").textContent=score.toLocaleString("en")+" pts";
+  $("st").innerHTML=`<div><b>${ok}/${res.length}</b>correct</div><div><b>${pc}%</b>accuracy</div><div><b>${best}</b>best streak</div>`;
+  const miss=res.filter(r=>!r.right);
+  $("redo").classList.toggle("hide",!miss.length);
+  $("redo").onclick=()=>begin(miss.map(r=>r.q));
+  const rv=$("rv");rv.innerHTML=miss.length?"<h3>To review</h3>":"<h3>Perfect round: nothing to review!</h3>";
+  miss.forEach(r=>{const d=document.createElement("div");d.className="rv";
+    const p=(c,t)=>{const e=document.createElement("p");if(c)e.className=c;e.textContent=t;d.appendChild(e)};
+    p("","• "+r.q.q);
+    p("no",r.timeout?"No answer given (time ran out)":"Your answer: "+r.chosen);
+    p("ok","Correct: "+r.q.o[r.q.a]);rv.appendChild(d)});
+  show("end");window.scrollTo(0,0);
+}
+$("go").onclick=()=>begin(ALL);
+$("again").onclick=()=>show("start");
+</script></body></html>
